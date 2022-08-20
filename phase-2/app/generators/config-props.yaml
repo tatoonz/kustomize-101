@@ -1,0 +1,9 @@
+apiVersion: builtin
+kind: ConfigMapGenerator
+metadata:
+  name: app-config-props
+files:
+  - configs/application.yaml
+  - application-extras.yaml=configs/more.yaml
+# options:
+#   disableNameSuffixHash: true

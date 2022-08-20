@@ -1,0 +1,47 @@
+resources:
+  - resources/deployment.yaml
+  - resources/service.yaml
+
+configMapGenerator:
+  - name: app-config-env
+    literals:
+      - MYSQL_HOST=localhost
+      - MYSQL_PORT=3306
+    envs:
+      - configs/config.env
+    # options:
+    #   disableNameSuffixHash: true
+  - name: app-config-props
+    files:
+      - configs/application.yaml
+      - application-extras.yaml=configs/more.yaml
+    # options:
+    #   disableNameSuffixHash: true
+
+secretGenerator:
+  - name: app-secret-env
+    literals:
+      - MYSQL_USERNAME=admin
+      - MYSQL_PASSWORD=password
+    envs:
+      - secrets/secret.env
+    # options:
+    #   disableNameSuffixHash: true
+  - name: app-secret-files
+    files:
+      - secrets/gcp-sa-key.json
+      - a-token.json=secrets/token.json
+    # options:
+    #   disableNameSuffixHash: true
+
+# generatorOptions:
+#   disableNameSuffixHash: true
+
+# Here is another way to use ConfigMap/Secret generator
+# Try comment both configMapGenerator and secretGenerator sections
+# and uncomment this section then try to build, the result will be the same
+# generators:
+#   - generators/config-env.yaml
+#   - generators/config-props.yaml
+#   - generators/secret-env.yaml
+#   - generators/secret-files.yaml

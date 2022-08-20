@@ -1,0 +1,11 @@
+apiVersion: builtin
+kind: ConfigMapGenerator
+metadata:
+  name: app-config-env
+literals:
+  - MYSQL_HOST=localhost
+  - MYSQL_PORT=3306
+envs:
+  - configs/config.env
+# options:
+#   disableNameSuffixHash: true
