@@ -1,0 +1,40 @@
+resources:
+  - ../../base
+
+images:
+  - name: nginx
+    newTag: 1.22-alpine
+
+configMapGenerator:
+  - name: app-config-env
+    behavior: merge
+    literals:
+      - MYSQL_HOST=mysql.sit.host
+    envs:
+      - configs/config.env
+  - name: app-config-props
+    behavior: merge
+    files:
+      - configs/application-extras.yaml
+
+secretGenerator:
+  - name: app-secret-env
+    behavior: merge
+    literals:
+      - MYSQL_PASSWORD=sitpassword
+    envs:
+      - secrets/secret.env
+  - name: app-secret-files
+    behavior: merge
+    files:
+      - gcp-sa-key.json=secrets/gcp-sa-key-sit.json
+
+
+patches:
+  - target:
+      kind: Service
+      name: nginx
+    patch: |-
+      - op: replace
+        path: /spec/ports/0/nodePort
+        value: 30081

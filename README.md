@@ -7,6 +7,7 @@ Introduction to Kustomize
 - phase-0 - just ordinary kubernetes yaml files
 - phase-1 - make app folder to Kustomizable
 - phase-2 - play around with ConfigMap/Secret generator
+- phase-final - introduce the overlay, override ConfigMap/Secret, change image tag and increase replicas in uat overlay
 
 ## The Basics
 

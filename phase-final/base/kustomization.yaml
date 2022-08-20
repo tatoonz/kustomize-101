@@ -1,0 +1,27 @@
+resources:
+  - resources/deployment.yaml
+  - resources/service.yaml
+
+configMapGenerator:
+  - name: app-config-env
+    literals:
+      - MYSQL_HOST=localhost
+      - MYSQL_PORT=3306
+    envs:
+      - configs/config.env
+  - name: app-config-props
+    files:
+      - configs/application.yaml
+      - application-extras.yaml=configs/more.yaml
+
+secretGenerator:
+  - name: app-secret-env
+    literals:
+      - MYSQL_USERNAME=admin
+      - MYSQL_PASSWORD=password
+    envs:
+      - secrets/secret.env
+  - name: app-secret-files
+    files:
+      - secrets/gcp-sa-key.json
+      - a-token.json=secrets/token.json

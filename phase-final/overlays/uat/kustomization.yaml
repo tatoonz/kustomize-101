@@ -1,0 +1,44 @@
+resources:
+  - ../../base
+
+replicas:
+  - name: nginx
+    count: 3
+
+images:
+  - name: nginx
+    newTag: 1.23-alpine
+
+configMapGenerator:
+  - name: app-config-env
+    behavior: merge
+    literals:
+      - MYSQL_HOST=mysql.uat.host
+    envs:
+      - configs/config.env
+  - name: app-config-props
+    behavior: merge
+    files:
+      - configs/application-extras.yaml
+
+secretGenerator:
+  - name: app-secret-env
+    behavior: merge
+    literals:
+      - MYSQL_PASSWORD=uatpassword
+    envs:
+      - secrets/secret.env
+  - name: app-secret-files
+    behavior: merge
+    files:
+      - secrets/gcp-sa-key.json
+
+
+patches:
+  - target:
+      kind: Service
+      name: nginx
+    patch: |-
+      - op: replace
+        path: /spec/ports/0/nodePort
+        value: 30082
