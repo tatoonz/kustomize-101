@@ -3,7 +3,7 @@ resources:
 
 images:
   - name: nginx
-    newTag: 1.23-alpine
+    newTag: 1.22-alpine
 
 configMapGenerator:
   - name: app-config-env
